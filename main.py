@@ -1,3 +1,5 @@
+#!/usr/bin/env main
+
 from section import *
 from scipy.optimize import root,root_scalar
 import numpy as np
