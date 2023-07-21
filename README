@@ -1,0 +1,41 @@
+Background
+
+In the Troitsky competition, there are bonus points for being under the legal height limit, with more points are awarded
+for lower points.  In addition to the fact that an I beam bridge won in 2020, an unofficial category of I beam bridges
+has arisen. This program in its current state is meant to be used in preliminary design and to be further developed by
+the BCIT team for detailed design. Connection design between web and flanges, bridge splices, bearing stiffeners, and
+buckling braces are simply accounted for by reducing the design weight of the bridge by 1000g.
+
+
+Libraries Needed
+
+This program uses scipy, numpy, and tabulate libraries
+
+
+User Inputs
+
+Material engineering properties are modified in the engineeringProps.py file.
+
+Bridge geometry is modified in the geometry.py file. Note: flange thicknesses are user defined. Solving the flange
+thicknesses analytically by solving flange buckling equations is likely unnecessary. Flange thicknesses should be
+adjusted to meet reasonable length to thickness ratios, maximum bridge width limits, and manufacturing requirements.
+
+The number of sections that define the beam can also be modified in geometry.py file.
+
+
+Overview of Method
+
+Solving the geometry of the beam done by the Beam class. This outlines how it works.
+
+1. For a given load, solve for the shear force applied.
+2. Using the shear force and beam height limit, solve for the web thickness.
+3. Use the web properties to solve where the web cannot resist the applied bending. This is where the flanges start.
+Note: due to how the web/flange connection is expected to be designed, the web extends from the bottom of the beam to
+the top of the beam.
+4. Discretize the beam by defining sections between the start of the flange and the midpoint
+5. Solve the flange widths at these sections to resist the bending moment at the section
+Note: this could be improved by optimizing the flange widths to minimize the area while matching the stresses to the
+material strengths. It is currently unknown how unoptimal the current result is.
+6. Find the mass of the resulting beam.
+7. Use a root finding function on the Beam class to make the total mass of the bridge 5kg. Output the corresponding
+geometry and load.
